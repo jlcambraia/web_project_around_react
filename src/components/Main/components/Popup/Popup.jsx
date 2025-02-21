@@ -1,12 +1,14 @@
+import closeButton from "../../../../images/close__icon.svg";
+
 export default function Popup(props) {
-  const { title, children } = props;
+  const { onClose, title, children } = props;
   return (
     <div className="popup popup_hidden popup_type_edit">
       <div className="popup__card">
-        <button className="popup__close-button">
+        <button className="popup__close-button" onClick={onClose}>
           <img
             className="popup__close-button-icon"
-            src="./src/images/close__icon.svg"
+            src={closeButton}
             alt="Ícone de Fechar"
           />
         </button>
