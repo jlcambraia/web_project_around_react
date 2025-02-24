@@ -11,8 +11,13 @@ export default function Card({ card, onClick }) {
   };
 
   return (
-    <li className="grid__card" onClick={() => onClick(imagePopup)}>
-      <img className="grid__img" src={link} alt="" />
+    <li className="grid__card">
+      <img
+        className="grid__img"
+        src={link}
+        alt=""
+        onClick={() => onClick(imagePopup)}
+      />
       <button
         className="grid__card-delete-button"
         aria-label="Delete card"
