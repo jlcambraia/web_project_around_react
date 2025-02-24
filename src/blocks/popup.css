@@ -33,8 +33,10 @@
   position: relative;
 }
 
-.popup__content {
-  position: relative;
+.popup__card_type_image {
+  background-color: transparent;
+  padding: 0;
+  border: none;
   max-width: 85%;
   max-height: 85%;
 }

@@ -4,7 +4,7 @@ export default function Popup(props) {
   const { onClose, title, children } = props;
   return (
     <div className="popup">
-      <div className="popup__card">
+      <div className={`popup__card ${!title ? "popup__card_type_image" : ""}`}>
         <button
           className="popup__close-button"
           aria-label="Close modal"
@@ -17,7 +17,7 @@ export default function Popup(props) {
             alt="Ícone de Fechar"
           />
         </button>
-        <h3 className="popup__title">{title}</h3>
+        {title && <h3 className="popup__title">{title}</h3>}
         {children}
       </div>
     </div>
