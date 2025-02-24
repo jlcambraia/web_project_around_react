@@ -31,6 +31,10 @@
   object-position: center;
 }
 
+.grid__img:hover {
+  cursor: pointer;
+}
+
 .grid__card-footer {
   background-color: #fff;
   display: flex;
