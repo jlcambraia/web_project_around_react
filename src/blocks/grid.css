@@ -1,5 +1,7 @@
 .grid {
   display: grid;
+  justify-content: center;
+  align-items: center;
 }
 
 .grid__card-container {
@@ -94,6 +96,7 @@
   .grid__card-container {
     grid-template-columns: repeat(1, 1fr);
     padding-bottom: 50px;
+    padding-left: 0;
     justify-self: center;
   }
 
