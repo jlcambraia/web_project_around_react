@@ -31,14 +31,18 @@ const cards = [
   },
 ];
 
-console.log(cards);
-
 export default function Main() {
   const [popup, setPopup] = useState(null);
 
-  const newCardPopup = { title: "New card", children: <NewCard /> };
-  const editProfilePopup = { title: "Edit profile", children: <EditProfile /> };
-  const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar /> };
+  const newCardPopup = { title: "Novo local", children: <NewCard /> };
+  const editProfilePopup = {
+    title: "Editar perfil",
+    children: <EditProfile />,
+  };
+  const editAvatarPopup = {
+    title: "Alterar a foto do perfil",
+    children: <EditAvatar />,
+  };
 
   function handleOpenPopup(popup) {
     setPopup(popup);
