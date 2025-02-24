@@ -5,7 +5,12 @@ export default function Popup(props) {
   return (
     <div className="popup">
       <div className="popup__card">
-        <button className="popup__close-button" onClick={onClose}>
+        <button
+          className="popup__close-button"
+          aria-label="Close modal"
+          type="button"
+          onClick={onClose}
+        >
           <img
             className="popup__close-button-icon"
             src={closeButton}

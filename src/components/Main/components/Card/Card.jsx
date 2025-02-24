@@ -1,11 +1,17 @@
 import deleteButton from "../../../../images/delete__icon.svg";
 import likeButton from "../../../../images/like__icon.svg";
+import ImagePopup from "../Popup/componentes/ImagePopup/ImagePopup";
 
-export default function Card(props) {
-  const { name, link, isLiked } = props.card;
+export default function Card({ card, onClick }) {
+  const { name, link } = card;
+
+  const imagePopup = {
+    title: "",
+    children: <ImagePopup card={card} />,
+  };
 
   return (
-    <li className="grid__card">
+    <li className="grid__card" onClick={() => onClick(imagePopup)}>
       <img className="grid__img" src={link} alt="" />
       <button
         className="grid__card-delete-button"

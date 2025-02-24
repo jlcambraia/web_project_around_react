@@ -9,6 +9,7 @@ import Popup from "./components/Popup/Popup";
 import NewCard from "./components/Popup/componentes/NewCard/NewCard";
 import EditProfile from "./components/Popup/componentes/EditProfile/EditProfile";
 import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
+
 import Card from "./components/Card/Card";
 
 const cards = [
@@ -101,7 +102,7 @@ export default function Main() {
 
         <ul className="grid__card-container">
           {cards.map((card) => (
-            <Card key={card._id} card={card} />
+            <Card key={card._id} card={card} onClick={handleOpenPopup} />
           ))}
         </ul>
       </section>
