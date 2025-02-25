@@ -30,6 +30,8 @@
   border-radius: 10px;
   padding: 34px 36px 36px;
   position: relative;
+  max-width: 85%;
+  max-height: 85%;
 }
 
 .popup__card_type_forms {
@@ -40,11 +42,11 @@
   background-color: transparent;
   padding: 0;
   border: none;
-  width: 60vh;
 }
 
 .popup__image {
   width: 100%;
+  max-height: 80vh;
 }
 
 .popup__caption {
