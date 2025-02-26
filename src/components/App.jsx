@@ -27,7 +27,7 @@ function App() {
       });
   }
 
-  // Enquanto estiver carregando, exibe essa mensagem
+  // Enquanto estiver carregando, exibe essa mensagem na página
   if (isLoading) {
     return <p>Carregando...</p>;
   }
