@@ -18,7 +18,7 @@ export default function Main() {
   const [cards, setCards] = useState([]);
 
   // Cria a constante currentUser, que faz o useContext
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   // Cria a constante do Popup para adicionar novos cartões
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
