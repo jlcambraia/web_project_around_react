@@ -19,13 +19,19 @@ export default function Main() {
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
 
+  // Cria a constante currentUser, que faz o useContext
   const currentUser = useContext(CurrentUserContext);
 
+  // Cria a constante do Popup para adicionar novos cartões
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
+
+  // Cria a constante do Popup para editar perfil
   const editProfilePopup = {
     title: "Editar perfil",
     children: <EditProfile />,
   };
+
+  // Cria a constante do Popup para editar avatar
   const editAvatarPopup = {
     title: "Alterar a foto do perfil",
     children: <EditAvatar />,
