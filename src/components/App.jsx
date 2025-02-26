@@ -35,11 +35,6 @@ function App() {
       });
   }
 
-  // Enquanto estiver carregando, exibe essa mensagem na página (melhorar estilização do loading)
-  if (isLoading) {
-    return <p>Carregando...</p>;
-  }
-
   // Atualiza os dados do usuário
   const handleUpdateUser = (data) => {
     (async () => {
@@ -58,6 +53,11 @@ function App() {
   // Função para fechar os popups
   function handleClosePopup() {
     setPopup(null);
+  }
+
+  // Enquanto estiver carregando, exibe essa mensagem na página (melhorar estilização do loading)
+  if (isLoading) {
+    return <p>Carregando...</p>;
   }
 
   return (
