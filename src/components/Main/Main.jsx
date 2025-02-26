@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 
-import profilePlaceholder from "../../images/profile__picture.jpg";
 import profileIcon from "../../images/profile__icon.png";
 import editIcon from "../../images/edit__icon.svg";
 import addIcon from "../../images/add__icon.svg";
