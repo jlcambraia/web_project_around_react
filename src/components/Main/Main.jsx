@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import profilePlaceholder from "../../images/profile__picture.jpg";
 import profileIcon from "../../images/profile__icon.png";
@@ -14,9 +14,13 @@ import Card from "./components/Card/Card";
 
 import { api } from "../../utils/api.js";
 
+import CurrentUserContext from "../../contexts/CurrentUserContext.js";
+
 export default function Main() {
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
+
+  const currentUser = useContext(CurrentUserContext);
 
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
   const editProfilePopup = {
@@ -59,7 +63,7 @@ export default function Main() {
           onClick={() => handleOpenPopup(editAvatarPopup)}
         >
           <img
-            src={profilePlaceholder}
+            src={currentUser.avatar}
             alt="Placeholder para Foto de Perfil do Usuário"
             className="profile__picture"
           />
@@ -72,7 +76,7 @@ export default function Main() {
 
         <div className="profile__user-info">
           <div className="profile__user-container">
-            <h1 className="profile__user-name">Jacques Cousteau</h1>
+            <h1 className="profile__user-name">{currentUser.name}</h1>
             <button
               className="profile__edit-button"
               onClick={() => handleOpenPopup(editProfilePopup)}
@@ -85,7 +89,7 @@ export default function Main() {
             </button>
           </div>
 
-          <p className="profile__user-about">Explorador</p>
+          <p className="profile__user-about">{currentUser.about}</p>
         </div>
         <button
           className="profile__add-button"
