@@ -8,8 +8,8 @@ export default function EditProfile() {
           className="popup__input"
           type="text"
           placeholder="Nome"
-          minLenght="2"
-          maxLenght="40"
+          minlenght="2"
+          maxlenght="40"
           required
         />
         <span
@@ -24,8 +24,8 @@ export default function EditProfile() {
           className="popup__input popup__input_margin-large"
           type="text"
           placeholder="Sobre mim"
-          minLenght="2"
-          maxLenght="200"
+          minlenght="2"
+          maxlenght="200"
           required
         />
         <span

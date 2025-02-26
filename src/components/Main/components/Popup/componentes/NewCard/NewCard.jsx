@@ -8,8 +8,8 @@ export default function NewCard() {
           className="popup__input"
           type="text"
           placeholder="Título"
-          minLenght="2"
-          maxLenght="30"
+          minlenght="2"
+          maxlenght="30"
           required
         />
         <span
