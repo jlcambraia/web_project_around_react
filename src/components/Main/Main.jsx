@@ -1,18 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-
 import profileIcon from "../../images/profile__icon.png";
 import editIcon from "../../images/edit__icon.svg";
 import addIcon from "../../images/add__icon.svg";
-
 import Popup from "./components/Popup/Popup";
 import NewCard from "./components/Popup/componentes/NewCard/NewCard";
 import EditProfile from "./components/Popup/componentes/EditProfile/EditProfile";
 import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
-
 import Card from "./components/Card/Card";
-
 import { api } from "../../utils/api.js";
-
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
 export default function Main() {
@@ -45,6 +40,14 @@ export default function Main() {
     getCardsFromApi();
   }, []);
 
+  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
+  function getCardsFromApi() {
+    api
+      .getCardsInfo()
+      .then((cards) => setCards(cards))
+      .catch((err) => console.error("Erro:", err)); // Quando popup de erro estiver configurado, colocar aqui;
+  }
+
   // Função que atualiza o estado de curtida do card ao clicar no botão like
   async function handleCardLike(card) {
     // Verificar mais uma vez se esse cartão já foi curtido
@@ -52,7 +55,7 @@ export default function Main() {
 
     // Enviar uma solicitação para a API e obter os dados do cartão atualizados
     await api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .updateLikeState(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
           state.map((currentCard) =>
@@ -60,15 +63,22 @@ export default function Main() {
           )
         );
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error)); // Quando popup de erro estiver configurado, colocar aqui;
   }
 
-  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
-  function getCardsFromApi() {
-    api
-      .getCardsInfo()
-      .then((cards) => setCards(cards))
-      .catch((err) => console.error("Erro:", err)); // Quando popup de erro estiver configurado, colocar aqui;
+  // Função que remove o card ao clicar no botão excluir
+  async function handleDeleteCard(card) {
+    await api
+      .deleteCard(card._id) // Envia uma solicitação para a API para excluir o cartão
+      .then(() => {
+        // Atualiza setCard removendo o cartão excluído
+        setCards((state) =>
+          state.filter((currentCard) => currentCard._id !== card._id)
+        );
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir o cartão:", error); // Quando popup de erro estiver configurado, colocar aqui;
+      });
   }
 
   // Função para abrir os popups
@@ -140,6 +150,8 @@ export default function Main() {
               card={card}
               isLiked={card.isLiked}
               onClick={handleOpenPopup}
+              onCardLike={handleCardLike}
+              onDeleteCard={handleDeleteCard}
             />
           ))}
         </ul>
