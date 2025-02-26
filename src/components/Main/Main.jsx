@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import profilePlaceholder from "../../images/profile__picture.jpg";
 import profileIcon from "../../images/profile__icon.png";
@@ -12,27 +12,11 @@ import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
 
 import Card from "./components/Card/Card";
 
-const cards = [
-  {
-    isLiked: false,
-    _id: "5d1f0611d321eb4bdcd707dd",
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:10:57.741Z",
-  },
-  {
-    isLiked: false,
-    _id: "5d1f064ed321eb4bdcd707de",
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:11:58.324Z",
-  },
-];
+import { api } from "../../utils/api.js";
 
 export default function Main() {
   const [popup, setPopup] = useState(null);
+  const [cards, setCards] = useState([]);
 
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
   const editProfilePopup = {
@@ -44,10 +28,25 @@ export default function Main() {
     children: <EditAvatar />,
   };
 
+  // Hook useEffect que chama a função getCardsFromApi
+  useEffect(() => {
+    getCardsFromApi();
+  }, []);
+
+  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
+  function getCardsFromApi() {
+    api
+      .getCardsInfo()
+      .then((cards) => setCards(cards))
+      .catch((err) => console.error("Erro:", err)); // Quando popup de erro estiver configurado, colocar aqui;
+  }
+
+  // Função para abrir os popups
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
 
+  // Função para fechar os popups
   function handleClosePopup() {
     setPopup(null);
   }
