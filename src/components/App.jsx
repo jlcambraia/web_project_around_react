@@ -7,7 +7,8 @@ import { api } from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Criado pois a página estava quebrando por não conseguir carregar as informações do usuário antes da renderização
 
   useEffect(() => {
     getUserInfo();
@@ -18,8 +19,17 @@ function App() {
       .getUserInfo()
       .then((userInfo) => {
         setCurrentUser(userInfo);
+        setIsLoading(false);
       })
-      .catch((err) => console.error("Erro", err)); // Quando popup de erro estiver configurado, colocar aqui;
+      .catch((err) => {
+        console.error("Erro", err); //  // Quando popup de erro estiver configurado, colocar aqui
+        setIsLoading(false);
+      });
+  }
+
+  // Enquanto estiver carregando, exibe essa mensagem
+  if (isLoading) {
+    return <p>Carregando...</p>;
   }
 
   return (

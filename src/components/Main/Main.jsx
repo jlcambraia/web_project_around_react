@@ -22,6 +22,11 @@ export default function Main() {
 
   const currentUser = useContext(CurrentUserContext);
 
+  // Enquanto não carrega as informações de currentUser, mostrar essa mensagem
+  if (!currentUser) {
+    return <p>Carregando informações do usuário...</p>;
+  }
+
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
   const editProfilePopup = {
     title: "Editar perfil",
