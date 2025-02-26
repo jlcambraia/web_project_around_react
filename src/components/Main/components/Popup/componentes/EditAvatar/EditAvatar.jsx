@@ -1,9 +1,23 @@
-export default function EditAvatar() {
+import { useRef } from "react";
+
+export default function EditAvatar({ onUpdateAvatar, onClose }) {
+  // Cria uma referência para o input do avatar
+  const avatarRef = useRef();
+
+  // Função para lidar com o input para troca de avatar
+  function handleAvatarLinkSubmit(evt) {
+    evt.preventDefault();
+    const avatarLink = avatarRef.current.value;
+
+    onUpdateAvatar({ avatarLink });
+  }
+
   return (
     <form
       className="popup__form"
       name="change-profile-picture-popup"
       noValidate
+      onSubmit={handleAvatarLinkSubmit}
     >
       <div className="popup__input-wrapper">
         <input
@@ -13,6 +27,7 @@ export default function EditAvatar() {
           type="url"
           placeholder="Link da imagem"
           required
+          ref={avatarRef}
         />
         <span
           id="popup__input-change-profile-link-error"

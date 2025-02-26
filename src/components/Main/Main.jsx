@@ -15,7 +15,7 @@ export default function Main({ popup, onOpenPopup, onClosePopup }) {
   const [cards, setCards] = useState([]);
 
   // Cria a constante currentUser, que faz o useContext
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
 
   // Cria a constante do Popup para adicionar novos cartões
   const newCardPopup = { title: "Novo local", children: <NewCard /> };
@@ -29,7 +29,9 @@ export default function Main({ popup, onOpenPopup, onClosePopup }) {
   // Cria a constante do Popup para editar avatar
   const editAvatarPopup = {
     title: "Alterar a foto do perfil",
-    children: <EditAvatar />,
+    children: (
+      <EditAvatar onUpdateAvatar={handleUpdateAvatar} onClose={onClosePopup} />
+    ),
   };
 
   // Hook useEffect que chama a função getCardsFromApi

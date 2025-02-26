@@ -105,7 +105,7 @@ class Api {
     });
   }
 
-  changeProfileImage(avatarLink) {
+  changeProfileImage(data) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: {
@@ -113,7 +113,7 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        avatar: avatarLink,
+        avatar: data.avatarLink,
       }),
     }).then((res) => {
       if (res.ok) {

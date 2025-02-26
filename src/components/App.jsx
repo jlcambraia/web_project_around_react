@@ -45,6 +45,16 @@ function App() {
     })();
   };
 
+  // Atualiza o avatar do usuário
+  const handleUpdateAvatar = (data) => {
+    (async () => {
+      await api.changeProfileImage(data).then((newData) => {
+        setCurrentUser(newData);
+        handleClosePopup(); // Fecha o popup após a atualização
+      });
+    })();
+  };
+
   // Função para abrir os popups
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -62,7 +72,9 @@ function App() {
 
   return (
     <>
-      <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser }}>
+      <CurrentUserContext.Provider
+        value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
+      >
         <div className="body">
           <div className="page">
             <Header />
