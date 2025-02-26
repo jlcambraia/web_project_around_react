@@ -3,12 +3,17 @@ import likeButton from "../../../../images/like__icon.svg";
 import ImagePopup from "../Popup/componentes/ImagePopup/ImagePopup";
 
 export default function Card({ card, onClick }) {
-  const { name, link } = card;
+  const { name, link, isLiked } = card;
 
   const imagePopup = {
     title: "",
     children: <ImagePopup card={card} />,
   };
+
+  // Verificar se o usuário atual “curtiu” o cartão
+  const cardLikeButtonClassName = `grid__like-icon ${
+    isLiked ? "grid__like-icon_active" : ""
+  }`;
 
   return (
     <li className="grid__card">
@@ -39,7 +44,7 @@ export default function Card({ card, onClick }) {
           <img
             src={likeButton}
             alt="Ícone de Curtir"
-            className="grid__like-icon"
+            className={cardLikeButtonClassName}
           />
         </button>
       </div>

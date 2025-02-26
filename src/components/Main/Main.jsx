@@ -108,7 +108,12 @@ export default function Main() {
 
         <ul className="grid__card-container">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onClick={handleOpenPopup} />
+            <Card
+              key={card._id}
+              card={card}
+              isLiked={card.isLiked}
+              onClick={handleOpenPopup}
+            />
           ))}
         </ul>
       </section>
