@@ -13,6 +13,9 @@ function App() {
   // Hook useState para definição se a página foi carregada ou não
   const [isLoading, setIsLoading] = useState(true); // Criado pois a página estava quebrando por não conseguir carregar as informações do usuário antes da renderização
 
+  // Hook useState para definição do estado atual dos popups, que estão fechados
+  const [popup, setPopup] = useState(null);
+
   // Hook useEffect que chama a função getUserInfo
   useEffect(() => {
     getUserInfo();
@@ -42,9 +45,20 @@ function App() {
     (async () => {
       await api.setUserInfo(data.name, data.about).then((newData) => {
         setCurrentUser(newData);
+        handleClosePopup();
       });
     })();
   };
+
+  // Função para abrir os popups
+  function handleOpenPopup(popup) {
+    setPopup(popup);
+  }
+
+  // Função para fechar os popups
+  function handleClosePopup() {
+    setPopup(null);
+  }
 
   return (
     <>
@@ -52,7 +66,11 @@ function App() {
         <div className="body">
           <div className="page">
             <Header />
-            <Main />
+            <Main
+              onOpenPopup={handleOpenPopup}
+              onClosePopup={handleClosePopup}
+              popup={popup}
+            />
             <Footer />
           </div>
         </div>

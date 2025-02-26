@@ -10,10 +10,7 @@ import Card from "./components/Card/Card";
 import { api } from "../../utils/api.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
-export default function Main() {
-  // Hook useState para definição do estado atual dos popups, que estão fechados
-  const [popup, setPopup] = useState(null);
-
+export default function Main({ popup, onOpenPopup, onClosePopup }) {
   // Hook useState para definição dos cards que serão carregados da api
   const [cards, setCards] = useState([]);
 
@@ -81,22 +78,12 @@ export default function Main() {
       });
   }
 
-  // Função para abrir os popups
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  // Função para fechar os popups
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
   return (
     <main className="content">
       <section className="profile">
         <div
           className="profile__picture-container"
-          onClick={() => handleOpenPopup(editAvatarPopup)}
+          onClick={() => onOpenPopup(editAvatarPopup)}
         >
           <img
             src={currentUser.avatar}
@@ -115,7 +102,7 @@ export default function Main() {
             <h1 className="profile__user-name">{currentUser.name}</h1>
             <button
               className="profile__edit-button"
-              onClick={() => handleOpenPopup(editProfilePopup)}
+              onClick={() => onOpenPopup(editProfilePopup)}
             >
               <img
                 src={editIcon}
@@ -129,7 +116,7 @@ export default function Main() {
         </div>
         <button
           className="profile__add-button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         >
           <img
             src={addIcon}
@@ -149,7 +136,7 @@ export default function Main() {
               key={card._id}
               card={card}
               isLiked={card.isLiked}
-              onClick={handleOpenPopup}
+              onClick={onOpenPopup}
               onCardLike={handleCardLike}
               onDeleteCard={handleDeleteCard}
             />
@@ -157,7 +144,7 @@ export default function Main() {
         </ul>
       </section>
       {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
+        <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
       )}
