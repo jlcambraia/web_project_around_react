@@ -16,7 +16,10 @@ import { api } from "../../utils/api.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
 export default function Main() {
+  // Hook useState para definição do estado atual dos popups, que estão fechados
   const [popup, setPopup] = useState(null);
+
+  // Hook useState para definição dos cards que serão carregados da api
   const [cards, setCards] = useState([]);
 
   // Cria a constante currentUser, que faz o useContext
@@ -41,6 +44,24 @@ export default function Main() {
   useEffect(() => {
     getCardsFromApi();
   }, []);
+
+  // Função que atualiza o estado de curtida do card ao clicar no botão like
+  async function handleCardLike(card) {
+    // Verificar mais uma vez se esse cartão já foi curtido
+    const isLiked = card.isLiked;
+
+    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
+    await api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  }
 
   // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
   function getCardsFromApi() {

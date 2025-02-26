@@ -7,7 +7,10 @@ import { api } from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
 function App() {
+  // Hook useState para definição do usuário atual
   const [currentUser, setCurrentUser] = useState(null);
+
+  // Hook useState para definição se a página foi carregada ou não
   const [isLoading, setIsLoading] = useState(true); // Criado pois a página estava quebrando por não conseguir carregar as informações do usuário antes da renderização
 
   // Hook useEffect que chama a função getUserInfo
