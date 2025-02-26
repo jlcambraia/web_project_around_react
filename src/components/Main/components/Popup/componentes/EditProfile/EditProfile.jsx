@@ -9,7 +9,7 @@ export default function EditProfile() {
   // Hook useState para definição do nome do usuário atual
   const [name, setName] = useState(currentUser.name);
   // Hook useState para definição do about do usuário atual
-  const [description, setDescription] = useState(currentUser.about);
+  const [about, setAbout] = useState(currentUser.about);
 
   // Função que atualiza o name quando o input for utilizado
   function handleNameChange(evt) {
@@ -17,14 +17,14 @@ export default function EditProfile() {
   }
 
   // Função que atualiza o about quando o input for utilizado
-  function handleDescriptionChange(evt) {
-    setDescription(evt.target.value);
+  function handleAboutChange(evt) {
+    setAbout(evt.target.value);
   }
 
   // Função que atualiza os dados do usuário ao clicar no botão Salvar
   const handleSubmit = (event) => {
     event.preventDefault(); // Impede o comportamento padrão de envio do formulário
-    handleUpdateUser({ name, about: description }); // Atualiza as informações do usuário
+    handleUpdateUser({ name, about }); // Atualiza as informações do usuário
   };
 
   return (
@@ -54,8 +54,8 @@ export default function EditProfile() {
       </div>
       <div className="popup__input-wrapper">
         <input
-          value={description}
-          onChange={handleDescriptionChange}
+          value={about}
+          onChange={handleAboutChange}
           name="about"
           id="popup__input-about"
           className="popup__input popup__input_margin-large"
