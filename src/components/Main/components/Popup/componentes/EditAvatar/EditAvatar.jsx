@@ -2,25 +2,36 @@ import { useRef, useState } from "react";
 
 export default function EditAvatar({ onUpdateAvatar }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Cria uma referência para o input do avatar
+  const [avatarError, setAvatarError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
   const avatarRef = useRef();
 
-  // Função para gerenciar o estado de submissão
-  function handleSubmitState(isSubmitting) {
-    setIsSubmitting(isSubmitting);
+  // Função para validar o input de avatar
+  function handleAvatarChange() {
+    const avatarValue = avatarRef.current.value;
+
+    if (avatarRef.current.validity.valid) {
+      setAvatarError("");
+      setIsFormValid(true);
+    } else {
+      setAvatarError(avatarRef.current.validationMessage);
+      setIsFormValid(false);
+    }
   }
 
-  // Função para lidar com o input para troca de avatar
+  // Função para lidar com o botão submit do form
   function handleAvatarLinkSubmit(evt) {
     evt.preventDefault();
 
-    // Atualiza o estado para "salvando"
-    handleSubmitState(true);
+    if (!isFormValid) return;
 
-    const avatarLink = avatarRef.current.value;
+    setIsSubmitting(true);
 
-    onUpdateAvatar({ avatarLink });
+    onUpdateAvatar({ avatarLink: avatarRef.current.value });
+
+    // Resetando o input e a validação após o envio
+    avatarRef.current.value = "";
+    setIsFormValid(false);
   }
 
   return (
@@ -39,19 +50,24 @@ export default function EditAvatar({ onUpdateAvatar }) {
           placeholder="Link da imagem"
           required
           ref={avatarRef}
+          onChange={handleAvatarChange}
         />
         <span
           id="popup__input-change-profile-link-error"
-          className="popup__input-error popup__input-error_positioned-top popup__input-error_hidden"
-        ></span>
+          className={`popup__input-error popup__input-error_positioned-top ${
+            !avatarError ? "popup__input-error_hidden" : ""
+          }`}
+        >
+          {avatarError}
+        </span>
       </div>
       <button
         id="popup__change-profile-picture-button"
         type="submit"
         className={`popup__save-button ${
-          isSubmitting ? "popup__save-button_disabled" : ""
+          isSubmitting || !isFormValid ? "popup__save-button_disabled" : ""
         }`}
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isFormValid}
       >
         {isSubmitting ? "Salvando..." : "Salvar"}
       </button>

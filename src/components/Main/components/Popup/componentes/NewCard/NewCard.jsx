@@ -8,24 +8,24 @@ export default function NewCard({ onAddPlace }) {
   const [linkError, setLinkError] = useState("");
 
   // Função para lidar com mudanças no campo de título
-  function handleNameChange(e) {
-    setName(e.target.value);
+  function handleNameChange(evt) {
+    setName(evt.target.value);
     // Validação do input do nome do local
-    if (e.target.validity.valid) {
+    if (evt.target.validity.valid) {
       setNameError("");
     } else {
-      setNameError(e.target.validationMessage);
+      setNameError(evt.target.validationMessage);
     }
   }
 
   // Função para lidar com mudanças no campo de link
-  function handleLinkChange(e) {
-    setLink(e.target.value);
+  function handleLinkChange(evt) {
+    setLink(evt.target.value);
     // Validação do input do link do local
-    if (e.target.validity.valid) {
+    if (evt.target.validity.valid) {
       setLinkError("");
     } else {
-      setLinkError(e.target.validationMessage);
+      setLinkError(evt.target.validationMessage);
     }
   }
 
@@ -38,8 +38,8 @@ export default function NewCard({ onAddPlace }) {
   }
 
   // Função para lidar com o envio do formulário
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(evt) {
+    evt.preventDefault();
 
     // Atualiza o estado para "salvando"
     handleSubmitState(true);
