@@ -1,0 +1,34 @@
+.loading {
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading__spinning-wheel {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #717171;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading__text {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #fff;
+}

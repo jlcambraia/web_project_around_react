@@ -3,6 +3,7 @@ import "../index.css";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
+import Loading from "./Loading/Loading";
 import { api } from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
@@ -67,7 +68,7 @@ function App() {
 
   // Enquanto estiver carregando, exibe essa mensagem na página (melhorar estilização do loading)
   if (isLoading) {
-    return <p>Carregando...</p>;
+    return <Loading />;
   }
 
   return (
