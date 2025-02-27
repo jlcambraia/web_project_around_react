@@ -60,13 +60,7 @@ export default function NewCard({ onAddPlace }) {
     setIsSubmitting(false);
   }
 
-  // Cria uma função personalizada de fechamento que chama o resetForm
-  function handleClose() {
-    resetForm();
-    onClose();
-  }
-
-  // Detecta quando o popup é fechado para resetar o formulário
+  // Reseta o form
   useEffect(() => {
     return () => {
       resetForm();
