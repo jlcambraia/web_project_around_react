@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from "react";
+// Main.jsx (modificado)
+import { useContext } from "react";
 import profileIcon from "../../images/profile__icon.png";
 import editIcon from "../../images/edit__icon.svg";
 import addIcon from "../../images/add__icon.svg";
@@ -7,18 +8,25 @@ import NewCard from "./components/Popup/componentes/NewCard/NewCard";
 import EditProfile from "./components/Popup/componentes/EditProfile/EditProfile";
 import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
 import Card from "./components/Card/Card";
-import { api } from "../../utils/api.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
-export default function Main({ popup, onOpenPopup, onClosePopup }) {
-  // Hook useState para definição dos cards que serão carregados da api
-  const [cards, setCards] = useState([]);
-
+export default function Main({
+  cards,
+  onCardLike,
+  onDeleteCard,
+  onAddPlace,
+  popup,
+  onOpenPopup,
+  onClosePopup,
+}) {
   // Cria a constante currentUser, que faz o useContext
   const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
 
   // Cria a constante do Popup para adicionar novos cartões
-  const newCardPopup = { title: "Novo local", children: <NewCard /> };
+  const newCardPopup = {
+    title: "Novo local",
+    children: <NewCard onAddPlace={onAddPlace} onClose={onClosePopup} />,
+  };
 
   // Cria a constante do Popup para editar perfil
   const editProfilePopup = {
@@ -33,52 +41,6 @@ export default function Main({ popup, onOpenPopup, onClosePopup }) {
       <EditAvatar onUpdateAvatar={handleUpdateAvatar} onClose={onClosePopup} />
     ),
   };
-
-  // Hook useEffect que chama a função getCardsFromApi
-  useEffect(() => {
-    getCardsFromApi();
-  }, []);
-
-  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
-  function getCardsFromApi() {
-    api
-      .getCardsInfo()
-      .then((cards) => setCards(cards))
-      .catch((err) => console.error("Erro:", err)); // Quando popup de erro estiver configurado, colocar aqui;
-  }
-
-  // Função que atualiza o estado de curtida do card ao clicar no botão like
-  async function handleCardLike(card) {
-    // Verificar mais uma vez se esse cartão já foi curtido
-    const isLiked = card.isLiked;
-
-    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
-    await api
-      .updateLikeState(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard
-          )
-        );
-      })
-      .catch((error) => console.error(error)); // Quando popup de erro estiver configurado, colocar aqui;
-  }
-
-  // Função que remove o card ao clicar no botão excluir
-  async function handleDeleteCard(card) {
-    await api
-      .deleteCard(card._id) // Envia uma solicitação para a API para excluir o cartão
-      .then(() => {
-        // Atualiza setCard removendo o cartão excluído
-        setCards((state) =>
-          state.filter((currentCard) => currentCard._id !== card._id)
-        );
-      })
-      .catch((error) => {
-        console.error("Erro ao excluir o cartão:", error); // Quando popup de erro estiver configurado, colocar aqui;
-      });
-  }
 
   return (
     <main className="content">
@@ -139,8 +101,8 @@ export default function Main({ popup, onOpenPopup, onClosePopup }) {
               card={card}
               isLiked={card.isLiked}
               onClick={onOpenPopup}
-              onCardLike={handleCardLike}
-              onDeleteCard={handleDeleteCard}
+              onCardLike={onCardLike}
+              onDeleteCard={onDeleteCard}
             />
           ))}
         </ul>

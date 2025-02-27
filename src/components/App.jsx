@@ -1,3 +1,4 @@
+// App.jsx (modificado)
 import { useState, useEffect } from "react";
 import "../index.css";
 import Header from "./Header/Header";
@@ -11,8 +12,11 @@ function App() {
   // Hook useState para definição do usuário atual
   const [currentUser, setCurrentUser] = useState(null);
 
+  // Hook useState para definição dos cards que serão carregados da api (movido do Main)
+  const [cards, setCards] = useState([]);
+
   // Hook useState para definição se a página foi carregada ou não
-  const [isLoading, setIsLoading] = useState(true); // Criado pois a página estava quebrando por não conseguir carregar as informações do usuário antes da renderização
+  const [isLoading, setIsLoading] = useState(true);
 
   // Hook useState para definição do estado atual dos popups, que estão fechados
   const [popup, setPopup] = useState(null);
@@ -22,18 +26,31 @@ function App() {
     getUserInfo();
   }, []);
 
+  // Hook useEffect que chama a função getCardsFromApi (movido do Main)
+  useEffect(() => {
+    getCardsFromApi();
+  }, []);
+
   // Função getUserInfo, que retorna os dados do usuário solicitados na Api e atualiza setCurrentUser
   function getUserInfo() {
     api
       .getUserInfo()
       .then((userInfo) => {
-        setCurrentUser(userInfo); // Atualiza os dados do usuário
-        setIsLoading(false); // Muda o useState do isLoading para false, para renderização da página
+        setCurrentUser(userInfo);
+        setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Erro", err); //  // Quando popup de erro estiver configurado, colocar aqui
-        setIsLoading(false); // Muda o useStante do isLoading para false, mesmo se der erro
+        console.error("Erro", err);
+        setIsLoading(false);
       });
+  }
+
+  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards (movido do Main)
+  function getCardsFromApi() {
+    api
+      .getCardsInfo()
+      .then((cards) => setCards(cards))
+      .catch((err) => console.error("Erro:", err));
   }
 
   // Atualiza os dados do usuário
@@ -51,10 +68,56 @@ function App() {
     (async () => {
       await api.changeProfileImage(data).then((newData) => {
         setCurrentUser(newData);
-        handleClosePopup(); // Fecha o popup após a atualização
+        handleClosePopup();
       });
     })();
   };
+
+  // Função que atualiza o estado de curtida do card ao clicar no botão like (movido do Main)
+  async function handleCardLike(card) {
+    // Verificar mais uma vez se esse cartão já foi curtido
+    const isLiked = card.isLiked;
+
+    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
+    await api
+      .updateLikeState(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  }
+
+  // Função que remove o card ao clicar no botão excluir (movido do Main)
+  async function handleDeleteCard(card) {
+    await api
+      .deleteCard(card._id)
+      .then(() => {
+        // Atualiza setCard removendo o cartão excluído
+        setCards((state) =>
+          state.filter((currentCard) => currentCard._id !== card._id)
+        );
+      })
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
+  }
+
+  // Função para adicionar um novo card (Nova função solicitada)
+  async function handleAddPlaceSubmit(cardData) {
+    await api
+      .addNewCard(cardData.name, cardData.link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        handleClosePopup();
+      })
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
+  }
 
   // Função para abrir os popups
   function handleOpenPopup(popup) {
@@ -66,7 +129,7 @@ function App() {
     setPopup(null);
   }
 
-  // Enquanto estiver carregando, exibe essa mensagem na página (melhorar estilização do loading)
+  // Enquanto estiver carregando, exibe essa mensagem na página
   if (isLoading) {
     return <Loading />;
   }
@@ -80,6 +143,10 @@ function App() {
           <div className="page">
             <Header />
             <Main
+              cards={cards}
+              onCardLike={handleCardLike}
+              onDeleteCard={handleDeleteCard}
+              onAddPlace={handleAddPlaceSubmit}
               onOpenPopup={handleOpenPopup}
               onClosePopup={handleClosePopup}
               popup={popup}
