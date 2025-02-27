@@ -22,17 +22,17 @@ export default function DeleteConfirmationPopup({ onClose, onConfirm }) {
       }
     };
 
-    // Adiciona event listener quando o componente é montado
+    // Adiciona event listener quando o componente é renderizado
     document.addEventListener("keydown", handleEscClose);
 
-    // Remove event listener quando o componente é desmontado
+    // Remove event listener
     return () => {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [onClose, isDeleting]);
 
   // Método específico para checar se o clique foi no overlay
-  const handleOverlayClick = (e) => {
+  const handleOverlayClick = (evt) => {
     // Verifica se o elemento clicado é exatamente o elemento com a classe popup_type_delete
     // e não qualquer um de seus filhos
     if (evt.target === evt.currentTarget && !isDeleting) {
@@ -44,7 +44,6 @@ export default function DeleteConfirmationPopup({ onClose, onConfirm }) {
     <div
       className="popup"
       onClick={handleOverlayClick}
-      // Adicionando data-testid para depuração se necessário
       data-testid="delete-overlay"
     >
       <div className="popup__card popup__card_type_delete">
