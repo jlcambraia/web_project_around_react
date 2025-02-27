@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import closeButton from "../../../../../../images/close__icon.svg";
 
 export default function DeleteConfirmationPopup({ onClose, onConfirm }) {
@@ -10,8 +10,43 @@ export default function DeleteConfirmationPopup({ onClose, onConfirm }) {
     onConfirm();
   };
 
+  // Efeito para lidar com o evento de pressionar a tecla Escape
+  useEffect(() => {
+    const handleEscClose = (e) => {
+      if (e.key === "Escape" && !isDeleting) {
+        // Desfoca qualquer elemento atualmente focado
+        if (document.activeElement) {
+          document.activeElement.blur();
+        }
+        onClose();
+      }
+    };
+
+    // Adiciona event listener quando o componente é montado
+    document.addEventListener("keydown", handleEscClose);
+
+    // Remove event listener quando o componente é desmontado
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [onClose, isDeleting]);
+
+  // Método específico para checar se o clique foi no overlay
+  const handleOverlayClick = (e) => {
+    // Verifica se o elemento clicado é exatamente o elemento com a classe popup_type_delete
+    // e não qualquer um de seus filhos
+    if (evt.target === evt.currentTarget && !isDeleting) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="popup">
+    <div
+      className="popup"
+      onClick={handleOverlayClick}
+      // Adicionando data-testid para depuração se necessário
+      data-testid="delete-overlay"
+    >
       <div className="popup__card popup__card_type_delete">
         <h2 className="popup__title popup__title_margin_small">Tem certeza?</h2>
         <button
