@@ -9,66 +9,46 @@ export default function EditProfile() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [nameError, setNameError] = useState("");
   const [aboutError, setAboutError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false); // Garante que o botão inicie desabilitado
+
+  // Atualiza a validação do formulário quando os erros mudam
+  useEffect(() => {
+    setIsFormValid(!nameError && !aboutError && name && about);
+  }, [nameError, aboutError, name, about]);
 
   // Função que atualiza o name quando o input for utilizado
   function handleNameChange(evt) {
     setName(evt.target.value);
-    // Validação do input do nome
-    if (evt.target.validity.valid) {
-      setNameError("");
-    } else {
-      setNameError(evt.target.validationMessage);
-    }
+    setNameError(evt.target.validity.valid ? "" : evt.target.validationMessage);
   }
 
   // Função que atualiza o about quando o input for utilizado
   function handleAboutChange(evt) {
     setAbout(evt.target.value);
-    // Validação do input do about
-    if (evt.target.validity.valid) {
-      setAboutError("");
-    } else {
-      setAboutError(evt.target.validationMessage);
-    }
+    setAboutError(
+      evt.target.validity.valid ? "" : evt.target.validationMessage
+    );
   }
 
-  // Verificação se o formulário é válido
-  const isFormValid = name && about && !nameError && !aboutError;
-
-  // Função para gerenciar o estado de submissão
-  function handleSubmitState(isSubmitting) {
-    setIsSubmitting(isSubmitting);
-  }
-
-  // Função que atualiza os dados do usuário ao clicar no botão Salvar
-  const handleSubmit = (evt) => {
+  function handleSubmit(evt) {
     evt.preventDefault();
+    setIsSubmitting(true);
+    handleUpdateUser({ name, about });
+  }
 
-    // Atualiza o estado para "salvando"
-    handleSubmitState(true);
-
-    handleUpdateUser({ name, about }); // Atualiza as informações do usuário
-  };
-
-  // Função para resetar o formulário após o fechamento do popup
   function resetForm() {
+    setName(currentUser.name);
+    setAbout(currentUser.about);
     setNameError("");
     setAboutError("");
     setIsSubmitting(false);
+    setIsFormValid(false); // Reseta o estado do botão
   }
 
-  // Cria uma função personalizada de fechamento que chama o resetForm
-  function handleClose() {
-    resetForm();
-    onClose();
-  }
-
-  // Detecta quando o popup é fechado para resetar o formulário
+  // Reseta o formulário ao abrir o popup
   useEffect(() => {
-    return () => {
-      resetForm();
-    };
-  }, []);
+    resetForm();
+  }, [currentUser]);
 
   return (
     <form
