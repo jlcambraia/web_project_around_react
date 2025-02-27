@@ -1,4 +1,3 @@
-// Main.jsx (modificado)
 import { useContext } from "react";
 import profileIcon from "../../images/profile__icon.png";
 import editIcon from "../../images/edit__icon.svg";
@@ -7,6 +6,7 @@ import Popup from "./components/Popup/Popup";
 import NewCard from "./components/Popup/componentes/NewCard/NewCard";
 import EditProfile from "./components/Popup/componentes/EditProfile/EditProfile";
 import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
+import ErrorPopup from "./components/Popup/componentes/errorPopup/ErrorPopup.jsx";
 import Card from "./components/Card/Card";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
@@ -18,28 +18,29 @@ export default function Main({
   popup,
   onOpenPopup,
   onClosePopup,
+  err, // Recebe o erro como prop
 }) {
-  // Cria a constante currentUser, que faz o useContext
   const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
 
-  // Cria a constante do Popup para adicionar novos cartões
   const newCardPopup = {
     title: "Novo local",
     children: <NewCard onAddPlace={onAddPlace} onClose={onClosePopup} />,
   };
 
-  // Cria a constante do Popup para editar perfil
   const editProfilePopup = {
     title: "Editar perfil",
     children: <EditProfile />,
   };
 
-  // Cria a constante do Popup para editar avatar
   const editAvatarPopup = {
     title: "Alterar a foto do perfil",
     children: (
       <EditAvatar onUpdateAvatar={handleUpdateAvatar} onClose={onClosePopup} />
     ),
+  };
+
+  const errorPopup = {
+    children: <ErrorPopup err={err} onClose={onClosePopup} />,
   };
 
   return (
@@ -110,6 +111,11 @@ export default function Main({
       {popup && (
         <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
+        </Popup>
+      )}
+      {err && ( // Renderiza o ErrorPopup se houver um erro
+        <Popup onClose={onClosePopup}>
+          <ErrorPopup err={err} onClose={onClosePopup} />
         </Popup>
       )}
     </main>

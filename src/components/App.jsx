@@ -1,4 +1,3 @@
-// App.jsx (modificado)
 import { useState, useEffect } from "react";
 import "../index.css";
 import Header from "./Header/Header";
@@ -9,24 +8,18 @@ import { api } from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
 function App() {
-  // Hook useState para definição do usuário atual
   const [currentUser, setCurrentUser] = useState(null);
-
-  // Hook useState para definição dos cards que serão carregados da api (movido do Main)
   const [cards, setCards] = useState([]);
-
-  // Hook useState para definição se a página foi carregada ou não
   const [isLoading, setIsLoading] = useState(true);
-
-  // Hook useState para definição do estado atual dos popups, que estão fechados
   const [popup, setPopup] = useState(null);
+  const [error, setError] = useState(null);
 
   // Hook useEffect que chama a função getUserInfo
   useEffect(() => {
     getUserInfo();
   }, []);
 
-  // Hook useEffect que chama a função getCardsFromApi (movido do Main)
+  // Hook useEffect que chama a função getCardsFromApi
   useEffect(() => {
     getCardsFromApi();
   }, []);
@@ -40,45 +33,54 @@ function App() {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Erro", err);
+        setError(err); // Define o erro
         setIsLoading(false);
       });
   }
 
-  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards (movido do Main)
+  // Função getCardsFromApi, que retorna os Cards solicitados na Api e atualiza setCards
   function getCardsFromApi() {
     api
       .getCardsInfo()
       .then((cards) => setCards(cards))
-      .catch((err) => console.error("Erro:", err));
+      .catch((err) => {
+        setError(err); // Define o erro
+      });
   }
 
   // Atualiza os dados do usuário
   const handleUpdateUser = (data) => {
     (async () => {
-      await api.setUserInfo(data.name, data.about).then((newData) => {
-        setCurrentUser(newData);
-        handleClosePopup();
-      });
+      await api
+        .setUserInfo(data.name, data.about)
+        .then((newData) => {
+          setCurrentUser(newData);
+          handleClosePopup();
+        })
+        .catch((err) => {
+          setError(err); // Define o erro
+        });
     })();
   };
 
   // Atualiza o avatar do usuário
   const handleUpdateAvatar = (data) => {
     (async () => {
-      await api.changeProfileImage(data).then((newData) => {
-        setCurrentUser(newData);
-        handleClosePopup();
-      });
+      await api
+        .changeProfileImage(data)
+        .then((newData) => {
+          setCurrentUser(newData);
+          handleClosePopup();
+        })
+        .catch((err) => {
+          setError(err); // Define o erro
+        });
     })();
   };
 
-  // Função que atualiza o estado de curtida do card ao clicar no botão like (movido do Main)
+  // Função que atualiza o estado de curtida do card ao clicar no botão like
   async function handleCardLike(card) {
-    // Verificar mais uma vez se esse cartão já foi curtido
     const isLiked = card.isLiked;
-
-    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
     await api
       .updateLikeState(card._id, !isLiked)
       .then((newCard) => {
@@ -88,21 +90,22 @@ function App() {
           )
         );
       })
-      .catch((error) => console.error(error));
+      .catch((err) => {
+        setError(err); // Define o erro
+      });
   }
 
-  // Função que remove o card ao clicar no botão excluir (movido do Main)
+  // Função que remove o card ao clicar no botão excluir
   async function handleDeleteCard(card) {
     await api
       .deleteCard(card._id)
       .then(() => {
-        // Atualiza setCard removendo o cartão excluído
         setCards((state) =>
           state.filter((currentCard) => currentCard._id !== card._id)
         );
       })
-      .catch((error) => {
-        console.error("Erro:", error);
+      .catch((err) => {
+        setError(err); // Define o erro
       });
   }
 
@@ -114,8 +117,8 @@ function App() {
         setCards([newCard, ...cards]);
         handleClosePopup();
       })
-      .catch((error) => {
-        console.error("Erro:", error);
+      .catch((err) => {
+        setError(err); // Define o erro
       });
   }
 
@@ -127,6 +130,7 @@ function App() {
   // Função para fechar os popups
   function handleClosePopup() {
     setPopup(null);
+    setError(null); // Limpa o erro ao fechar o popup
   }
 
   // Enquanto estiver carregando, exibe essa mensagem na página
@@ -150,6 +154,7 @@ function App() {
               onOpenPopup={handleOpenPopup}
               onClosePopup={handleClosePopup}
               popup={popup}
+              err={error} // Passa o erro para o Main
             />
             <Footer />
           </div>
