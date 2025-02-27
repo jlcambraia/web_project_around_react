@@ -39,6 +39,7 @@
 }
 
 .popup__card_type_delete {
+  font-family: "Inter";
   width: 320px;
 }
 
