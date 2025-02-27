@@ -4,16 +4,33 @@ export default function NewCard({ onAddPlace }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const [linkError, setLinkError] = useState("");
 
   // Função para lidar com mudanças no campo de título
   function handleNameChange(e) {
     setName(e.target.value);
+    // Validação do input do nome do local
+    if (e.target.validity.valid) {
+      setNameError("");
+    } else {
+      setNameError(e.target.validationMessage);
+    }
   }
 
   // Função para lidar com mudanças no campo de link
   function handleLinkChange(e) {
     setLink(e.target.value);
+    // Validação do input do link do local
+    if (e.target.validity.valid) {
+      setLinkError("");
+    } else {
+      setLinkError(e.target.validationMessage);
+    }
   }
+
+  // Verificação se o formulário é válido
+  const isFormValid = name && link && !nameError && !linkError;
 
   // Função para gerenciar o estado de submissão
   function handleSubmitState(isSubmitting) {
@@ -33,6 +50,28 @@ export default function NewCard({ onAddPlace }) {
       link,
     });
   }
+
+  // Função para resetar o formulário após o fechamento do popup
+  function resetForm() {
+    setName("");
+    setLink("");
+    setNameError("");
+    setLinkError("");
+    setIsSubmitting(false);
+  }
+
+  // Cria uma função personalizada de fechamento que chama o resetForm
+  function handleClose() {
+    resetForm();
+    onClose();
+  }
+
+  // Detecta quando o popup é fechado para resetar o formulário
+  useEffect(() => {
+    return () => {
+      resetForm();
+    };
+  }, []);
 
   return (
     <form
@@ -56,8 +95,12 @@ export default function NewCard({ onAddPlace }) {
         />
         <span
           id="popup__input-title-error"
-          className="popup__input-error"
-        ></span>
+          className={`popup__input-error ${
+            !nameError ? "popup__input-error_hidden" : ""
+          }`}
+        >
+          {nameError}
+        </span>
       </div>
       <div className="popup__input-wrapper">
         <input
@@ -72,16 +115,20 @@ export default function NewCard({ onAddPlace }) {
         />
         <span
           id="popup__input-link-error"
-          className="popup__input-error popup__input-error_positioned-top"
-        ></span>
+          className={`popup__input-error popup__input-error_positioned-top ${
+            !linkError ? "popup__input-error_hidden" : ""
+          }`}
+        >
+          {linkError}
+        </span>
       </div>
       <button
         id="popup__save-add-button"
         type="submit"
         className={`popup__save-button ${
-          isSubmitting ? "popup__save-button_disabled" : ""
+          isSubmitting || !isFormValid ? "popup__save-button_disabled" : ""
         }`}
-        disabled={isSubmitting}
+        disabled={!isFormValid || isSubmitting}
       >
         {isSubmitting ? "Salvando..." : "Criar"}
       </button>
