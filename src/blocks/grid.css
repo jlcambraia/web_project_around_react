@@ -11,8 +11,8 @@
   padding-bottom: 67px;
 }
 
-.grid__without-cards-text_hidden {
-  display: none;
+.grid__without-cards-text {
+  height: 47vh;
 }
 
 .grid__card {

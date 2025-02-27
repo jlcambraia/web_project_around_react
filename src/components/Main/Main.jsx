@@ -21,6 +21,7 @@ export default function Main({
   err,
 }) {
   const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
+  const hasCards = cards && cards.length > 0;
 
   const newCardPopup = {
     title: "Novo local",
@@ -87,29 +88,31 @@ export default function Main({
         </button>
       </section>
       <section className="grid">
-        <div className="grid__without-cards">
-          <p className="grid__without-cards-text"></p>
-        </div>
-
-        <ul className="grid__card-container">
-          {cards.map((card) => (
-            <Card
-              key={card._id}
-              card={card}
-              isLiked={card.isLiked}
-              onClick={onOpenPopup}
-              onCardLike={onCardLike}
-              onDeleteCard={onDeleteCard}
-            />
-          ))}
-        </ul>
+        {!hasCards ? (
+          <div className="grid__without-cards">
+            <p className="grid__without-cards-text">Não há nenhum card</p>
+          </div>
+        ) : (
+          <ul className="grid__card-container">
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                isLiked={card.isLiked}
+                onClick={onOpenPopup}
+                onCardLike={onCardLike}
+                onDeleteCard={onDeleteCard}
+              />
+            ))}
+          </ul>
+        )}
       </section>
       {popup && (
         <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
       )}
-      {err && ( // Renderiza o ErrorPopup se houver um erro
+      {err && (
         <Popup onClose={onClosePopup}>
           <ErrorPopup err={err} onClose={onClosePopup} />
         </Popup>
