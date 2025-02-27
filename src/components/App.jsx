@@ -106,7 +106,7 @@ function App() {
       });
   }
 
-  // Função para adicionar um novo card (Nova função solicitada)
+  // Função para adicionar um novo card
   async function handleAddPlaceSubmit(cardData) {
     await api
       .addNewCard(cardData.name, cardData.link)

@@ -1,12 +1,23 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-export default function EditAvatar({ onUpdateAvatar, onClose }) {
+export default function EditAvatar({ onUpdateAvatar }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Cria uma referência para o input do avatar
   const avatarRef = useRef();
+
+  // Função para gerenciar o estado de submissão
+  function handleSubmitState(isSubmitting) {
+    setIsSubmitting(isSubmitting);
+  }
 
   // Função para lidar com o input para troca de avatar
   function handleAvatarLinkSubmit(evt) {
     evt.preventDefault();
+
+    // Atualiza o estado para "salvando"
+    handleSubmitState(true);
+
     const avatarLink = avatarRef.current.value;
 
     onUpdateAvatar({ avatarLink });
@@ -37,9 +48,12 @@ export default function EditAvatar({ onUpdateAvatar, onClose }) {
       <button
         id="popup__change-profile-picture-button"
         type="submit"
-        className="popup__save-button"
+        className={`popup__save-button ${
+          isSubmitting ? "popup__save-button_disabled" : ""
+        }`}
+        disabled={isSubmitting}
       >
-        Salvar
+        {isSubmitting ? "Salvando..." : "Salvar"}
       </button>
     </form>
   );

@@ -2,14 +2,11 @@ import { useState, useContext } from "react";
 import CurrentUserContext from "../../../../../../contexts/CurrentUserContext";
 
 export default function EditProfile() {
-  // Cria a constante currentUser, que faz o useContext do usuário
-  const userContext = useContext(CurrentUserContext); // Obtém o objeto de usuário atual
+  const userContext = useContext(CurrentUserContext);
   const { currentUser, handleUpdateUser } = userContext;
-
-  // Hook useState para definição do nome do usuário atual
   const [name, setName] = useState(currentUser.name);
-  // Hook useState para definição do about do usuário atual
   const [about, setAbout] = useState(currentUser.about);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Função que atualiza o name quando o input for utilizado
   function handleNameChange(evt) {
@@ -21,9 +18,18 @@ export default function EditProfile() {
     setAbout(evt.target.value);
   }
 
+  // Função para gerenciar o estado de submissão
+  function handleSubmitState(isSubmitting) {
+    setIsSubmitting(isSubmitting);
+  }
+
   // Função que atualiza os dados do usuário ao clicar no botão Salvar
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Impede o comportamento padrão de envio do formulário
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    // Atualiza o estado para "salvando"
+    handleSubmitState(true);
+
     handleUpdateUser({ name, about }); // Atualiza as informações do usuário
   };
 
@@ -73,9 +79,12 @@ export default function EditProfile() {
       <button
         id="popup__save-edit-button"
         type="submit"
-        className="popup__save-button"
+        className={`popup__save-button ${
+          isSubmitting ? "popup__save-button_disabled" : ""
+        }`}
+        disabled={isSubmitting}
       >
-        Salvar
+        {isSubmitting ? "Salvando..." : "Salvar"}
       </button>
     </form>
   );
