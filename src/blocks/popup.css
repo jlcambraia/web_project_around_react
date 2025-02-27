@@ -38,6 +38,10 @@
   width: 420px;
 }
 
+.popup__card_type_delete {
+  width: 320px;
+}
+
 .popup__card_type_image {
   background-color: transparent;
   padding: 0;
@@ -165,6 +169,20 @@
   cursor: pointer;
 }
 
+.popup__delete-confirmation-button_disabled {
+  background-color: #fff;
+  border: 1px solid #c4c4c4;
+  color: #c4c4c4;
+  cursor: not-allowed;
+}
+
+.popup__delete-confirmation-button_disabled:hover {
+  background-color: #fff;
+  border: 1px solid #c4c4c4;
+  color: #c4c4c4;
+  cursor: not-allowed;
+}
+
 .popup__close-button {
   border: none;
   background-color: transparent;
@@ -183,6 +201,10 @@
   .popup__card {
     width: 75%;
     padding: 25px 22px;
+  }
+
+  .popup__card_type_delete {
+    width: 70%;
   }
 
   .popup__content {
