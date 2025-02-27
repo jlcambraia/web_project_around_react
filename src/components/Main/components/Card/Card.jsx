@@ -23,7 +23,7 @@ export default function Card({ card, onClick, onCardLike, onDeleteCard }) {
 
   // Criação do removedor de cards
   function handleDeleteClick() {
-    onDeleteCard(card);
+    onDeleteCard(card); // Chama a função passada pelo componente pai para abrir o popup
   }
 
   return (

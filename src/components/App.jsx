@@ -6,6 +6,7 @@ import Footer from "./Footer/Footer";
 import Loading from "./Loading/Loading";
 import { api } from "../utils/api.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
+import DeleteConfirmationPopup from "./Main/components/Popup/componentes/DeleteConfirmationPopup/DeleteConfirmationPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -13,6 +14,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [popup, setPopup] = useState(null);
   const [error, setError] = useState(null);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState(null);
 
   // Hook useEffect que chama a função getUserInfo
   useEffect(() => {
@@ -95,8 +98,20 @@ function App() {
       });
   }
 
+  // Função para abrir o popup de confirmação de exclusão
+  const handleOpenDeletePopup = (card) => {
+    setCardToDelete(card); // Armazena o card selecionado para exclusão
+    setIsDeletePopupOpen(true);
+  };
+
+  // Função para fechar o popup de confirmação de exclusão
+  const handleCloseDeletePopup = () => {
+    setIsDeletePopupOpen(false);
+    setCardToDelete(null); // Limpa o card selecionado
+  };
+
   // Função que remove o card ao clicar no botão excluir
-  async function handleDeleteCard(card) {
+  async function handleConfirmDelete(card) {
     await api
       .deleteCard(card._id)
       .then(() => {
@@ -106,7 +121,8 @@ function App() {
       })
       .catch((err) => {
         setError(err); // Define o erro
-      });
+      })
+      .finally(() => handleCloseDeletePopup());
   }
 
   // Função para adicionar um novo card
@@ -130,7 +146,7 @@ function App() {
   // Função para fechar os popups
   function handleClosePopup() {
     setPopup(null);
-    setError(null); // Limpa o erro ao fechar o popup
+    setError(null);
   }
 
   // Enquanto estiver carregando, exibe essa mensagem na página
@@ -149,7 +165,7 @@ function App() {
             <Main
               cards={cards}
               onCardLike={handleCardLike}
-              onDeleteCard={handleDeleteCard}
+              onDeleteCard={handleOpenDeletePopup}
               onAddPlace={handleAddPlaceSubmit}
               onOpenPopup={handleOpenPopup}
               onClosePopup={handleClosePopup}
@@ -159,6 +175,12 @@ function App() {
             <Footer />
           </div>
         </div>
+        {isDeletePopupOpen && (
+          <DeleteConfirmationPopup
+            onClose={handleCloseDeletePopup}
+            onConfirm={() => handleConfirmDelete(cardToDelete)}
+          />
+        )}
       </CurrentUserContext.Provider>
     </>
   );

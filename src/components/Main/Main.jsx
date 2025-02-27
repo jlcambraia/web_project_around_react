@@ -18,7 +18,7 @@ export default function Main({
   popup,
   onOpenPopup,
   onClosePopup,
-  err, // Recebe o erro como prop
+  err,
 }) {
   const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
 
@@ -37,10 +37,6 @@ export default function Main({
     children: (
       <EditAvatar onUpdateAvatar={handleUpdateAvatar} onClose={onClosePopup} />
     ),
-  };
-
-  const errorPopup = {
-    children: <ErrorPopup err={err} onClose={onClosePopup} />,
   };
 
   return (
