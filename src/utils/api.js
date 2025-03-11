@@ -1,11 +1,12 @@
 class Api {
-  constructor({ baseUrl, token }) {
+  constructor({ baseUrl, token, makeRequest }) {
     this._baseUrl = baseUrl;
     this._token = token;
+    this._makeRequest = makeRequest;
   }
 
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
       headers: {
         authorization: this._token,
       },
@@ -18,7 +19,7 @@ class Api {
   }
 
   getCardsInfo() {
-    return fetch(`${this._baseUrl}/cards`, {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
       headers: {
         authorization: this._token,
       },
@@ -39,7 +40,7 @@ class Api {
   }
 
   setUserInfo(inputNameValue, inputAboutValue) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return this._makeRequest(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: {
         authorization: this._token,
@@ -58,7 +59,7 @@ class Api {
   }
 
   addNewCard(inputTitleValue, inputLinkValue) {
-    return fetch(`${this._baseUrl}/cards`, {
+    return this._makeRequest(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: {
         authorization: this._token,
@@ -77,7 +78,7 @@ class Api {
   }
 
   updateLikeState(cardId, isLiked) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this._makeRequest(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? "PUT" : "DELETE",
       headers: {
         authorization: this._token,
@@ -92,7 +93,7 @@ class Api {
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+    return this._makeRequest(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
         authorization: this._token,
@@ -106,7 +107,7 @@ class Api {
   }
 
   changeProfileImage(data) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
+    return this._makeRequest(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: {
         authorization: this._token,
@@ -128,6 +129,7 @@ class Api {
 const apiConfig = {
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
   token: "a97c4c63-ce40-4267-993b-56ebee3b0bfe",
+  makeRequest: (...args) => fetch(...args),
 };
 
 // Instância para o Api
