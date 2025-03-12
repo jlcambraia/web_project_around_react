@@ -8,8 +8,6 @@ export default function EditAvatar({ onUpdateAvatar }) {
 
   // Função para validar o input de avatar
   function handleAvatarChange() {
-    const avatarValue = avatarRef.current.value;
-
     if (avatarRef.current.validity.valid) {
       setAvatarError("");
       setIsFormValid(true);
