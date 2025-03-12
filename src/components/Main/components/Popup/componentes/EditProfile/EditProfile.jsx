@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import CurrentUserContext from "../../../../../../contexts/CurrentUserContext";
 
 export default function EditProfile() {
@@ -36,19 +36,19 @@ export default function EditProfile() {
     handleUpdateUser({ name, about });
   }
 
-  function resetForm() {
+  const resetForm = useCallback(() => {
     setName(currentUser.name);
     setAbout(currentUser.about);
     setNameError("");
     setAboutError("");
     setIsSubmitting(false);
-    setIsFormValid(false); // Reseta o estado do botão
-  }
+    setIsFormValid(false);
+  }, [currentUser.name, currentUser.about]);
 
   // Reseta o formulário ao abrir o popup
   useEffect(() => {
     resetForm();
-  }, [currentUser]);
+  }, [currentUser, resetForm]);
 
   return (
     <form
