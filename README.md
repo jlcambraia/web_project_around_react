@@ -14,23 +14,25 @@ O website "Around the U.S." é uma plataforma interativa que visa explorar e cel
 
 ## Tecnologias e Técnicas utilizadas:
 
-1. **HTML5**: O documento é estruturado utilizando HTML5, que oferece suporte a recursos modernos e semânticos para uma melhor acessibilidade.
+1. **React**: O projeto foi desenvolvido utilizando React, uma biblioteca JavaScript para construção de interfaces dinâmicas e reativas. Componentes reutilizáveis e o gerenciamento de estado garantem uma experiência de usuário fluida e organizada.
 
-2. **Metadados**: O uso de metadados garante a responsividade do site, a otimização para motores de busca (SEO) e a descrição precisa do conteúdo da página.
+2. **Interação com API**: A aplicação consome API externa para solicitar, enviar e atualizar informações em tempo real.
 
-3. **CSS Externo**: A estrutura do site utiliza uma folha de estilo CSS externa, permitindo uma separação clara entre conteúdo e apresentação, o que facilita a manutenção do código.
+3. **JSX (JavaScript XML)**: O uso de JSX permite escrever componentes React de maneira mais intuitiva, combinando JavaScript com a estrutura declarativa semelhante ao HTML.
 
-4. **Imagens e Favicon**: O projeto inclui imagens que enriquecem a experiência visual do usuário, além de um favicon para identificação no navegador.
+4. **Gerenciamento de Estado**: O estado dos componentes é gerenciado utilizando useState e useEffect, permitindo atualizações dinâmicas e reatividade na interface.
 
-5. **Estrutura Semântica**: Utiliza tags semânticas do HTML5 para organizar o conteúdo de maneira lógica, melhorando a acessibilidade e a compreensão da estrutura do site.
+5. **CSS Modularizado**: A estilização do projeto utiliza CSS Modules, garantindo um encapsulamento seguro dos estilos e evitando conflitos entre classes.
 
 6. **Boas Práticas de SEO**: O uso de metatags e uma estrutura de cabeçalho adequada ajudam na otimização do site, melhorando sua visibilidade nos motores de busca.
 
-7. **Interatividade com JavaScript**: O site incorpora JavaScript para funcionalidades interativas, como a manipulação de formulários e a atualização dinâmica de conteúdo, proporcionando uma experiência mais envolvente para o usuário.
+7. **Imagens e Favicon**: O projeto incorpora imagens otimizadas e um favicon para melhor identidade visual e reconhecimento da aplicação no navegador.
 
 8. **Organização Modular**: O código é organizado de maneira modular, separando o CSS do HTML, seguindo boas práticas de desenvolvimento que facilitam a manutenção e a reutilização.
 
 9. **Responsividade**: O site é totalmente responsivo, adaptando-se a diferentes tamanhos de tela, como smartphones, tablets e desktops, garantindo uma experiência de usuário consistente em todos os dispositivos.
+
+10. **Estrutura Semântica**: Mesmo utilizando React, o projeto mantém uma estrutura semântica HTML5, garantindo acessibilidade e uma melhor organização do conteúdo.
 
 ## Planos de Melhoria:
 
