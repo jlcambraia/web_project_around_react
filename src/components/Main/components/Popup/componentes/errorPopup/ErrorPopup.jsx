@@ -2,17 +2,21 @@ import { useEffect } from "react";
 import closeButton from "../../../../../../images/close__icon.svg";
 
 export default function ErrorPopup({ err, onClose }) {
-  if (!err) return null; // Não renderiza nada se não houver erro
-
-  // Use o useEffect para configurar o temporizador
+  // Use o useEffect sem condição no nível superior
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose(); // Chama a função onClose após 3 segundos
-    }, 3000);
+    // Só executa a lógica se err existir
+    if (err) {
+      const timer = setTimeout(() => {
+        onClose(); // Chama a função onClose após 3 segundos
+      }, 3000);
 
-    // Limpa o temporizador se o componente for desmontado antes dos 3 segundos
-    return () => clearTimeout(timer);
-  }, [onClose]);
+      // Limpa o temporizador se o componente for desmontado antes dos 3 segundos
+      return () => clearTimeout(timer);
+    }
+  }, [err, onClose]);
+
+  // Renderiza condicionalmente o conteúdo, não o componente inteiro
+  if (!err) return null;
 
   return (
     <div className="popup">
