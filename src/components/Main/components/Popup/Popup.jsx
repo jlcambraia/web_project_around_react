@@ -1,14 +1,13 @@
-import closeButton from "../../../../images/close__icon.svg";
+import closeIcon from "../../../../images/close__icon.svg";
+
 import { useEffect } from "react";
 
 export default function Popup(props) {
   const { onClose, title, children } = props;
 
-  // Efeito para lidar com o evento de pressionar a tecla Escape
   useEffect(() => {
     const handleEscClose = (evt) => {
       if (evt.key === "Escape") {
-        // Desfoca qualquer elemento atualmente focado
         if (document.activeElement) {
           document.activeElement.blur();
         }
@@ -16,19 +15,14 @@ export default function Popup(props) {
       }
     };
 
-    // Adiciona event listener quando o componente é montado
     document.addEventListener("keydown", handleEscClose);
 
-    // Remove event listener quando o componente é desmontado
     return () => {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [onClose]);
 
-  // Função para lidar com cliques no overlay (fora do popup__card)
   const handleOverlayClick = (evt) => {
-    // Verifica se o clique foi diretamente no elemento com classe "popup"
-    // e não em algum de seus filhos
     if (evt.target.classList.contains("popup")) {
       onClose();
     }
@@ -49,7 +43,7 @@ export default function Popup(props) {
         >
           <img
             className="popup__close-button-icon"
-            src={closeButton}
+            src={closeIcon}
             alt="Ícone de Fechar"
           />
         </button>
