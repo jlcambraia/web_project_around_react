@@ -110,6 +110,12 @@
     margin: 0 0 30px;
   }
 
+  .profile__icon {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   .profile__user-container {
     column-gap: 10px;
   }
