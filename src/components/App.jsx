@@ -54,10 +54,8 @@ function App() {
   }
 
   async function handleCardLike(card) {
-    // Verificar mais uma vez se esse cartão já foi curtido
     const isLiked = card.isLiked;
 
-    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
     await api
       .updateLikeState(card._id, isLiked)
       .then((newCard) => {
