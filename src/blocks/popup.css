@@ -204,6 +204,10 @@
     padding: 25px 22px;
   }
 
+  .popup__card_type_image {
+    padding: 0;
+  }
+
   .popup__card_type_delete {
     width: 70%;
   }
