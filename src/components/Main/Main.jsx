@@ -1,44 +1,57 @@
-import { useContext } from "react";
-import profileIcon from "../../images/profile__icon.png";
+import { useContext, useEffect } from "react";
+
+import avatarIcon from "../../images/profile__icon.png";
 import editIcon from "../../images/edit__icon.svg";
 import addIcon from "../../images/add__icon.svg";
-import Popup from "./components/Popup/Popup";
-import NewCard from "./components/Popup/componentes/NewCard/NewCard";
-import EditProfile from "./components/Popup/componentes/EditProfile/EditProfile";
-import EditAvatar from "./components/Popup/componentes/EditAvatar/EditAvatar";
-import ErrorPopup from "./components/Popup/componentes/ErrorPopup/ErrorPopup";
-import Card from "./components/Card/Card";
-import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
-export default function Main({
-  cards,
-  onCardLike,
-  onDeleteCard,
-  onAddPlace,
-  popup,
-  onOpenPopup,
-  onClosePopup,
-  err,
-}) {
-  const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
+import Popup from "./components/Popup/Popup";
+import EditProfile from "./components/Popup/components/EditProfile/EditProfile";
+import NewCard from "./components/Popup/components/NewCard/NewCard";
+import EditAvatar from "./components/Popup/components/EditAvatar/EditAvatar";
+import ErrorPopup from "./components/Popup/components/ErrorPopup/ErrorPopup";
+
+import Card from "./components/Card/Card";
+
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
+export default function Main(props) {
+  const {
+    onOpenPopup,
+    onClosePopup,
+    popup,
+    cards,
+    onCardLike,
+    onCardDelete,
+    onAddPlaceSubmit,
+    error,
+  } = props;
+
   const hasCards = cards && cards.length > 0;
 
-  const newCardPopup = {
-    title: "Novo local",
-    children: <NewCard onAddPlace={onAddPlace} onClose={onClosePopup} />,
-  };
+  const { currentUser } = useContext(CurrentUserContext);
 
   const editProfilePopup = {
     title: "Editar perfil",
     children: <EditProfile />,
   };
-
+  const newCardPopup = {
+    title: "Novo local",
+    children: <NewCard onAddPlaceSubmit={onAddPlaceSubmit} />,
+  };
   const editAvatarPopup = {
     title: "Alterar a foto do perfil",
-    children: (
-      <EditAvatar onUpdateAvatar={handleUpdateAvatar} onClose={onClosePopup} />
-    ),
+    children: <EditAvatar />,
   };
+
+  useEffect(() => {
+    if (error) {
+      const errorPopup = {
+        title: "Ops! Tivemos um erro:",
+        children: <ErrorPopup error={error} />,
+      };
+      onOpenPopup(errorPopup);
+    }
+  }, [error, onOpenPopup]);
 
   return (
     <main className="content">
@@ -53,7 +66,7 @@ export default function Main({
             className="profile__picture"
           />
           <img
-            src={profileIcon}
+            src={avatarIcon}
             alt="Ícone de Editar para o Perfil do Usuário"
             className="profile__icon"
           />
@@ -101,7 +114,7 @@ export default function Main({
                 isLiked={card.isLiked}
                 onClick={onOpenPopup}
                 onCardLike={onCardLike}
-                onDeleteCard={onDeleteCard}
+                onCardDelete={onCardDelete}
               />
             ))}
           </ul>
@@ -110,11 +123,6 @@ export default function Main({
       {popup && (
         <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
-        </Popup>
-      )}
-      {err && (
-        <Popup onClose={onClosePopup}>
-          <ErrorPopup err={err} onClose={onClosePopup} />
         </Popup>
       )}
     </main>
