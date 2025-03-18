@@ -5,17 +5,20 @@ class Api {
     this._makeRequest = makeRequest;
   }
 
+  _handleServerResponse(res) {
+    return res.ok
+      ? res.json()
+      : Promise.reject(
+          `Erro ao carregar informações do usuário: ${res.status}`
+        );
+  }
+
   getUserInfo() {
     return this._makeRequest(`${this._baseUrl}/users/me`, {
       headers: {
         authorization: this._token,
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 
   getCardsInfo() {
@@ -23,20 +26,7 @@ class Api {
       headers: {
         authorization: this._token,
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
-  }
-
-  getUserInfoAndCards() {
-    return Promise.all([this.getUserInfo(), this.getCardsInfo()]).then(
-      ([userInfo, cards]) => {
-        return { userInfo, cards };
-      }
-    );
+    }).then(this._handleServerResponse);
   }
 
   setUserInfo(inputNameValue, inputAboutValue) {
@@ -50,12 +40,7 @@ class Api {
         name: inputNameValue,
         about: inputAboutValue,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 
   addNewCard(inputTitleValue, inputLinkValue) {
@@ -69,27 +54,17 @@ class Api {
         name: inputTitleValue,
         link: inputLinkValue,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 
   updateLikeState(cardId, isLiked) {
     return this._makeRequest(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: isLiked ? "PUT" : "DELETE",
+      method: isLiked ? "DELETE" : "PUT",
       headers: {
         authorization: this._token,
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 
   deleteCard(cardId) {
@@ -98,12 +73,7 @@ class Api {
       headers: {
         authorization: this._token,
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 
   changeProfileImage(data) {
@@ -114,14 +84,9 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        avatar: data.avatarLink,
+        avatar: data.avatar,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Algo deu errado: ${res.status}`);
-    });
+    }).then(this._handleServerResponse);
   }
 }
 
