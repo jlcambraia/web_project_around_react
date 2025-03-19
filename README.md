@@ -6,7 +6,7 @@ Around the U.S.
 
 ## Link para o GitHub Pages:
 
-O site está disponível no GitHub Pages em breve...
+O site está disponível no GitHub Pages: [Clique aqui para acessar](https://jlcambraia.github.io/web_project_around_react/)
 
 ## Descrição do Projeto:
 
